@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/app_security_1
+    username: postgres
+    password: nozimjon
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8080
+jwt:
+  secret-key: thisissecretkeynobadyknowthissecretkeyandthisiisenough
+  expiration: 86400000
+  refresh-token:
+    expiration: 604800000
