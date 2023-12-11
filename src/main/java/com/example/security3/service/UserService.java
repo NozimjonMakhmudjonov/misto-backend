@@ -73,12 +73,9 @@ public class UserService {
     public HttpEntity<?> deleteUser(Long id) {
         Optional<EntUser> optionalEntUser = userRepository.findById(id);
         if (optionalEntUser.isPresent()){
-
             userRepository.deleteById(id);
             return ResponseEntity.status(202).body("User is deleted");
         }return ResponseEntity.status(404).body("User already has been deleted");
 
     }
-
-
 }

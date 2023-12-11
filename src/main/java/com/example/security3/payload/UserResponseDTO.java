@@ -5,11 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDTO {
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String phoneNumber;
+public class UserResponseDTO extends BaseUserDTO {
     private String accessToken;
     private String refreshToken;
 }
