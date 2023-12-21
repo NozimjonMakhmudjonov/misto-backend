@@ -21,18 +21,18 @@ public class AttachmentController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long upload(@RequestParam MultipartFile request){
+    public String upload(@RequestParam MultipartFile request){
         return attachmentService.upload(request);
     }
-    @GetMapping("/{id}")
-    public void download(@PathVariable Long id, HttpServletResponse response){
-        attachmentService.download(id, response);
+    @GetMapping("/{name}")
+    public void download(@PathVariable String name, HttpServletResponse response){
+        attachmentService.download(name, response);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    @DeleteMapping("/{name}")
+    public void delete(@PathVariable String name){
         try {
-            attachmentService.delete(id);
+            attachmentService.delete(name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,11 +1,13 @@
 package com.example.security3.service;
 
+import com.example.security3.entity.EntAttachment;
 import com.example.security3.entity.EntUser;
 import com.example.security3.enums.ErrorCode;
 import com.example.security3.mapper.UserMapper;
 import com.example.security3.payload.FilterParams;
 import com.example.security3.payload.UserCreateDTO;
 import com.example.security3.payload.UserDTO;
+import com.example.security3.repository.AttachmentRepository;
 import com.example.security3.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AttachmentRepository attachmentRepository;
 
     private EntUser getEntUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
@@ -32,10 +35,15 @@ public class UserService {
         );
     }
 
-    public UserDTO getUserById(Long id) {
-            return userMapper.toUserDto(getEntUserById(id));
+    private EntAttachment getAttachment(String attachmentName){
+        return attachmentRepository.findByName(attachmentName).orElseThrow(
+                () -> new EntityNotFoundException(String.valueOf(ErrorCode.USER_NOT_FOUND))
+        );
     }
 
+    public UserDTO getUserById(Long id) {
+        return userMapper.toUserDto(getEntUserById(id));
+    }
 
     public Page<UserDTO> getUserPage(FilterParams filterParams) {
         Page<EntUser> userPage = userRepository.findAll(
@@ -48,6 +56,7 @@ public class UserService {
         if (optionalEntUser.isEmpty()) {
             EntUser entUser = userMapper.fromDto(user);
             entUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            entUser.setAttachment(getAttachment(user.getAttachmentName()));
             userRepository.save(entUser);
             return ResponseEntity.status(201).body("User is created");
         }

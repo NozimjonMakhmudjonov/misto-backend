@@ -9,4 +9,5 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class UserCreateDTO extends BaseUserDTO{
     private String password;
+    private String attachmentName;
 }

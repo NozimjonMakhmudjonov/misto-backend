@@ -1,11 +1,13 @@
 package com.example.security3.payload;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDTO extends BaseUserDTO{
+public class PropertyDTO {
     private Long id;
-    private AttachmentDTO attachmentDTO;
+    private String name;
+    private String value;
 }

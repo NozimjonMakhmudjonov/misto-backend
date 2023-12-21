@@ -28,7 +28,7 @@ public class AttachmentService {
     private final AttachmentMapper attachmentMapper;
     private static final String directory = "uploaded";
 
-    public Long upload(MultipartFile file)  {
+    public String upload(MultipartFile file)  {
         AttachmentCreateDTO attachmentCreateDTO = new AttachmentCreateDTO();
         String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
         String contentType = split[split.length - 1];
@@ -46,11 +46,11 @@ public class AttachmentService {
             throw new RuntimeException(e);
         }
         Optional<EntAttachment> optional = attachmentRepository.findByName(name);
-        return optional.map(EntAttachment::getId).orElse(null);
+        return optional.map(EntAttachment::getName).orElse(null);
     }
 
-    public void download(Long id, HttpServletResponse response) {
-        Optional<EntAttachment> optional = attachmentRepository.findById(id);
+    public void download(String name, HttpServletResponse response) {
+        Optional<EntAttachment> optional = attachmentRepository.findByName(name);
         if (optional.isPresent()) {
             AttachmentDTO attachmentDTO = attachmentMapper.toDto(optional.get());
             response.setHeader("Content-Disposition",
@@ -67,15 +67,15 @@ public class AttachmentService {
         }
     }
 
-    public void delete(Long id) throws IOException {
-        Optional<EntAttachment> optional = attachmentRepository.findById(id);
+    public void delete(String name) throws IOException {
+        Optional<EntAttachment> optional = attachmentRepository.findByName(name);
         if (optional.isPresent()) {
             AttachmentDTO attachmentDTO = attachmentMapper.toDto(optional.get());
-            String name = attachmentDTO.getName();
-            Path path = Paths.get(directory + "/" + name);
+            String name1 = attachmentDTO.getName();
+            Path path = Paths.get(directory + "/" + name1);
             File file=new File(String.valueOf(path));
             if (file.exists()){
-                attachmentRepository.deleteById(id);
+                attachmentRepository.delete(optional.get());
                 Files.delete(path);
             }
         }

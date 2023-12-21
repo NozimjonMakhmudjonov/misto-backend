@@ -21,6 +21,7 @@ public class UserAuth implements UserDetails {
     private String password;
     private String address;
     private Role role;
+    private String attachmentName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

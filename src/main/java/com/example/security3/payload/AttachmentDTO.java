@@ -9,5 +9,4 @@ public class AttachmentDTO {
     private long size;
     private String contentType;
     private String name;
-    private Long userId;
 }

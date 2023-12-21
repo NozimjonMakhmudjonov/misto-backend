@@ -29,7 +29,8 @@ public class EntUser extends BaseEntity {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(orphanRemoval = true)
+//    @OneToOne(orphanRemoval = true)
+    @OneToOne
     private EntAttachment attachment;
 
 }
